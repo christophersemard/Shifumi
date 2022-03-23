@@ -114,3 +114,29 @@ td:nth-child(2n){
     text-align: center;
     margin-top: 10px;
 }
+
+form div{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+form div input{
+    margin-right: 5px;
+}
+
+h2{
+    font-size: 1em;
+}
+
+#classement{
+    width:100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+}
+
+#classement_beststreak{
+    width:80%;
+    background-color: none;
+}

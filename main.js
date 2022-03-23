@@ -24,13 +24,9 @@ function jouer()
     else if(localStorage.getItem(userName) === null){
         localStorage.setItem(userName, JSON.stringify({games : 0, victories : 0, bestStreak : 0, currentStreak : 0}));
         tableUser = JSON.parse(localStorage.getItem(userName));
-        console.log(tableUser);
-        console.log(tableUser.bestStreak);
     }
     else{
         tableUser = JSON.parse(localStorage.getItem(userName));
-        console.log(tableUser);
-        console.log(tableUser.bestStreak);
     }
 
     // Récupération des informations du choix du joueur
@@ -87,7 +83,7 @@ function jouer()
     
     // Création du tableau de stats
     let newTableUser = JSON.parse(localStorage.getItem(userName));
-    let statsTable = "<h1>STATISTIQUES</h1><table><tr><td>Parties jouées</td><td>"+newTableUser.games+"</td></tr><tr><td>Victoires</td><td>"+newTableUser.victories+"</td></tr><tr><td>Meilleure série</td><td>"+newTableUser.bestStreak+"</td></tr><tr><td>Série en cours</td><td>"+newTableUser.currentStreak+"</td></tr></table>";
+    let statsTable = "<h1>STATISTIQUES</h1><table id='stats_table'><tr><td>Parties jouées</td><td>"+newTableUser.games+"</td></tr><tr><td>Victoires</td><td>"+newTableUser.victories+"</td></tr><tr><td>Meilleure série</td><td>"+newTableUser.bestStreak+"</td></tr><tr><td>Série en cours</td><td>"+newTableUser.currentStreak+"</td></tr></table>";
     stats.innerHTML = statsTable;
 
     // Insertion du choix de l'adversaire et du résultat
@@ -109,13 +105,32 @@ function jouer()
 
 
     // Actualiser le classement
-    // let classementBox = document.getElementById("classement");
-    // for(var i = 0; i < 3; i++){
-    //     if(choixButtons[i].checked){
-    //     choixPlayer = choixButtons[i].value;
-    //     }
-    // }
+    let classementBox = document.getElementById("classement");
+    let bestStreakTable = [];
+    for(let i = 0; i < localStorage.length; i++){
+        let tableUser = JSON.parse(localStorage.getItem(localStorage.key(i)));
 
+
+        bestStreakTable.push({ name: localStorage.key(i), value: tableUser.bestStreak });
+    }
+
+    bestStreakTable.sort(function (b, a) {
+        return a.value - b.value;
+      });
+    
+    console.log(bestStreakTable);
+
+    // let classementTable = "<h2>Meilleure série de victoires</h2><table id='classement_beststreak'><tr><td>"+bestStreakTable[0].name+"</td><td>"+bestStreakTable[0].value+"</td></tr><tr><td>"+bestStreakTable[1].name+"</td><td>"+bestStreakTable[1].value+"</td></tr><tr><td>"+bestStreakTable[2].name+"</td><td>"+bestStreakTable[2].value+"</td></tr></table>";
+
+    let classementTable = "<h2>Meilleure série de victoires</h2><table id='classement_beststreak'>";
+
+    for(let i = 0; i < bestStreakTable.length; i++){
+        classementTable = classementTable + "<tr><td>"+bestStreakTable[i].name+"</td><td>"+bestStreakTable[i].value+"</td></tr>"
+    }
+
+    classementTable = classementTable + "</table>";
+
+    classementBox.innerHTML = classementTable;
 
 }
 
@@ -155,3 +170,4 @@ function test(choixComputer)
     return resultGame;
 
 }
+
