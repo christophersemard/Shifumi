@@ -1,20 +1,17 @@
+// Résultats possibles
 let resultGamePerdu = "Perdu !";
 let resultGameGagne = "Gagné !";
 let resultGameNul = "Match nul";
-
-let timeTimeout = 1000;
 
 let classementBox = document.querySelector("#classement");
 let resultBox = document.querySelector('#result_box');
 let matchResultBox = document.querySelector('#result-text');
 let iconAdversaireBox = document.querySelector('#adversaire-icon');
 
-let choixAdver = document.getElementById("choixadvers")
-let resultat = document.getElementById("resultat")
-
 // Affichage du classement lors du chargement de la page
 actualiserClassement()
 
+// Fonction appelée lors du click sur le bouton jouer
 function jouer(){
     let utilisateur = gestionUtilisateur();
     console.log(utilisateur);
@@ -33,32 +30,31 @@ function jouer(){
 // Vérifier, créer ou récupérer le joueur
 function gestionUtilisateur() {
     // Récupération des informations du joueur
-    let userName = document.getElementById("pseudo").value;
-    let tableUser;
-
+    let utilisateurName = document.getElementById("pseudo").value;
+    let utilisateur;
     // Vérifier sur le pseudo est valide
-    let userNameREGX = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{2,100}$/u;
-    let userNameResult = userNameREGX.test(userName);
-    if(userNameResult == false)
+    let utilisateurNameREGX = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{2,100}$/u;
+    let utilisateurNameResult = utilisateurNameREGX.test(utilisateurName);
+    if(utilisateurNameResult == false)
     {
         alert('Votre pseudo est invalide !');
         return;
     }
     // Créer le joueur si il n'existe pas
-    else if(localStorage.getItem(userName) === null){
-        localStorage.setItem(userName, JSON.stringify({
-            name : userName,
+    else if(localStorage.getItem(utilisateurName) === null){
+        localStorage.setItem(utilisateurName, JSON.stringify({
+            name : utilisateurName,
             games : 0, 
             victories : 0, 
             bestStreak : 0, 
             currentStreak : 0}));
-        tableUser = JSON.parse(localStorage.getItem(userName));
-        return tableUser;
+            utilisateur = JSON.parse(localStorage.getItem(utilisateurName));
+        return utilisateur;
     }
     // Récupérer le joueur si il existe
     else{
-        tableUser = JSON.parse(localStorage.getItem(userName));
-        return tableUser;
+        utilisateur = JSON.parse(localStorage.getItem(utilisateurName));
+        return utilisateur;
     }
 }
 
@@ -110,6 +106,8 @@ function testResultatMatch(choixJoueur,choixOrdi) {
     }
 }
 
+
+// Actualiser le score dans la base de données
 function actualiserScore(resultatMatch,utilisateur) { 
     console.log(resultatMatch);
     // Si l'utilisateur a perdu ou match nul on lui ajoute seulement une partie en plus et on réinitialise sa série en cours
@@ -141,15 +139,13 @@ function actualiserScore(resultatMatch,utilisateur) {
                 victories : utilisateur.victories + 1, 
                 bestStreak : utilisateur.bestStreak, 
                 currentStreak : utilisateur.currentStreak + 1}));
-
         }
     }
-
 }
 
 
+// Affichage de la partie statistiques
 function afficherStats(utilisateur) { 
-    
     // Récupération de l'utilisateuur à jour
     utilisateur = JSON.parse(localStorage.getItem(utilisateur.name));
     // Suppression du classement précédent
@@ -162,29 +158,32 @@ function afficherStats(utilisateur) {
     // Création du nouveau tableau de statistiques via un template
     var template = document.querySelector("#template-stats");
     var clone = document.importNode(template.content, true);
+    // Ajout de la stat parties jouées
     var games = clone.querySelector("#stats-games");
     games.textContent = utilisateur.games
+    // Ajout de la stat victoire
     var victories = clone.querySelector("#stats-victories");
     victories.textContent = utilisateur.victories
+    // Ajout de la stat meilleure série
     var bestStreak = clone.querySelector("#stats-best-streak");
     bestStreak.textContent = utilisateur.bestStreak
+    // Ajout de la stat série en cours
     var currentStreak = clone.querySelector("#stats-current-streak");
     currentStreak.textContent = utilisateur.currentStreak
-    
     // Ajout et affichage du tableau de statistiques
     statsBox.appendChild(clone)
 }
 
 
+// Affichage du résultat de la partie
 function afficherResultat(resultatMatch,resultatChoixOrdi) { 
     // Récupérer l'icone à afficher
     let iconeOrdi = recupererIcone(resultatChoixOrdi);
     console.log(iconeOrdi);
     iconAdversaireBox.className = iconeOrdi; 
-
     // Ajout du texte du résultat
     matchResultBox.textContent = resultatMatch;
-    // Colorisation du texte
+    // Colorisation du texte selon résultat
     matchResultBox.style.color = "black" ;
     if (resultatMatch === resultGameGagne){
         matchResultBox.style.color = "green" ;
@@ -192,12 +191,13 @@ function afficherResultat(resultatMatch,resultatChoixOrdi) {
     else if (resultatMatch === resultGamePerdu){
         matchResultBox.style.color = "red" ;
     }
-
     // Affichage du block
     resultBox.style.display = "block";
 
 }
 
+
+// Récupérer l'icone à afficher
 function recupererIcone(resultChoixOrdi) { 
     if (resultChoixOrdi === "pierre"){
         return 'fa-solid fa-hand-fist fa-3x'
@@ -211,40 +211,35 @@ function recupererIcone(resultChoixOrdi) {
 }
 
 
+// Actualiser le classement
 function actualiserClassement() {
-
     bestStreakTable()
-
 }
 
 
+// Créer le classement de meilleures séries
 function bestStreakTable() {
-
     // Récupérer toutes les utilisateurs et leurs stats
     let bestStreakTable = [];
     for(let i = 0; i < localStorage.length; i++){
         let tableUser = JSON.parse(localStorage.getItem(localStorage.key(i)));
         bestStreakTable.push({ name: localStorage.key(i), value: tableUser.bestStreak });
     }
-
     // Trier le tableau par leur meilleur série de victoires
     bestStreakTable.sort(function (b, a) {
         return a.value - b.value;
     });
-
     // Suppression de l'ancien classement
     if(classementBox.hasChildNodes()){
         while (classementBox.lastElementChild) {
             classementBox.removeChild(classementBox.lastElementChild);
         }
     }
-
     // Création de l'affichage du classement 
     var template = document.querySelector("#template-classement");
     var clone = document.importNode(template.content, true);
     var table = clone.querySelector("#classement_beststreak");
-
-    // Création de chaque ligne
+    // Création de chaque ligne du tableau
     for(let i = 0; i < bestStreakTable.length; i++){
         let row = document.createElement("tr");
         let name = document.createElement("td");
@@ -256,7 +251,6 @@ function bestStreakTable() {
         table.appendChild(row);
     }
     classementBox.appendChild(clone)
-
 }
 
 
