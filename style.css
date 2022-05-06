@@ -85,7 +85,7 @@ form div{
 #adversaire{
     margin: 10px;
 }
-#result{
+#result-text{
     margin: 10px;
     font-weight: bold;
     font-size: xx-large;
@@ -140,3 +140,5 @@ h2{
     width:80%;
     background-color: none;
 }
+
+

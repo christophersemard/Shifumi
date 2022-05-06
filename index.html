@@ -8,7 +8,6 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"/>
         <link rel="stylesheet" href="style.css"/>
         <script src="https://kit.fontawesome.com/c52cbb9b58.js" crossorigin="anonymous"></script>
-        <script src="main.js"> </script>
     </head>
     <body>
         <main>
@@ -26,7 +25,7 @@
                         <label for="pierre">Pierre <i class="fa-solid fa-hand-fist"></i></label>
                     </div>
                     <div>
-                        <input type="radio" id="papier" name="shifumi" value="papier" />
+                        <input type="radio" id="papier" name="shifumi" value="feuille" />
                         <label for="papier">Papier <i class="fa-solid fa-hand"></i></label>
                     </div>
                     <div>
@@ -40,12 +39,14 @@
             <div id="result_box">
                 <div>
                     <div id="message">
-                        <!-- Message -->
+                        Votre adversaire a joué ...
                     </div>
                     <div id="adversaire">
-                        <!-- Icone du choix de l'adversaire -->
+                        <i id="adversaire-icon"></i>
+                        <!-- Icone choix de l'ordi -->
                     </div>
-                    <div id="result">
+                    <div id="resultat">
+                        <p id="result-text"></p>
                         <!-- Résultat de la partie -->
                     </div>
                     <div id="stats">
@@ -58,5 +59,36 @@
             <h1>CLASSEMENT</h1>
             <div id="classement"></div>
         </aside>
+
+
+        <template id="template-stats">
+            <h1>STATISTIQUES</h1>
+            <table id='stats_table'>
+                <tr>
+                    <td>Parties jouées</td>
+                    <td id="stats-games"></td>
+                </tr>
+                <tr>
+                    <td>Victoires</td>
+                    <td id="stats-victories"></td>
+                </tr>
+                <tr>
+                    <td>Meilleure série</td>
+                    <td id="stats-best-streak"></td>
+                </tr>
+                <tr>
+                    <td>Série en cours</td>
+                    <td id="stats-current-streak"></td>
+                </tr>
+            </table>
+        </template>
+        
+        <template id="template-classement">
+            <h2>Meilleure série de victoires</h2>
+            <table id='classement_beststreak'>
+                <!-- Insertion des lignes -->
+            </table>
+        </template>
+        <script src="app.js"> </script>
     </body>
 </html>
