@@ -13,18 +13,23 @@ actualiserClassement()
 
 // Fonction appelée lors du click sur le bouton jouer
 function jouer(){
+    // Récupérer l'utilisateur
     let utilisateur = gestionUtilisateur();
-    console.log(utilisateur);
+    // Récupérer le choix du joueur
     let resultatChoixJoueur = choixJoueur(); 
-    console.log(resultatChoixJoueur);
+    // Récupérer le choix de l'ordi
     let resultatChoixOrdi = choixordi();
-    console.log(resultatChoixOrdi);
+    // Récupérer le résultats du match
     let resultatMatch = testResultatMatch(resultatChoixJoueur,resultatChoixOrdi);
-    actualiserScore(resultatMatch, utilisateur)
+
+    // Actualiser les statistiques de l'utilisateur en base de données
+    actualiserStatistiques(resultatMatch, utilisateur)
+    // Afficher les statistiques
     afficherStats(utilisateur)
+    // Afficher le résultat
     afficherResultat(resultatMatch, resultatChoixOrdi)
+    // Actualiser le classement
     actualiserClassement()
-    
 }
 
 // Vérifier, créer ou récupérer le joueur
@@ -107,8 +112,8 @@ function testResultatMatch(choixJoueur,choixOrdi) {
 }
 
 
-// Actualiser le score dans la base de données
-function actualiserScore(resultatMatch,utilisateur) { 
+// Actualiser les statistiques de l'utilisateur dans la base de données
+function actualiserStatistiques(resultatMatch,utilisateur) { 
     console.log(resultatMatch);
     // Si l'utilisateur a perdu ou match nul on lui ajoute seulement une partie en plus et on réinitialise sa série en cours
     if(resultatMatch === resultGamePerdu || resultatMatch === resultGameNul){
